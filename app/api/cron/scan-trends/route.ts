@@ -7,7 +7,8 @@ import { processTrends } from "@/lib/trends/processor"
 export async function GET(request: NextRequest) {
   // Verify cron secret (Vercel sends this as Bearer token)
   const authHeader = request.headers.get("authorization")
-  if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+  const cronSecret = process.env.CRON_SECRET?.trim()
+  if (authHeader !== `Bearer ${cronSecret}`) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
   }
 
